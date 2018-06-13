@@ -12,15 +12,7 @@ class ProductsController extends Controller
         return Product::all();   
     }
 
-    public function store() {
-
-    }
-
-    public function update($id) {
-
-    }
-
-    public function delete($id) {
-        
+    public function store(Request $request){
+        return Product::create($request->all());
     }
 }
