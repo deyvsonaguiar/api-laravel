@@ -8,12 +8,20 @@ use App\Product;
 class ProductsController extends Controller
 {
     public function index() {
+        //acrescentando cache aos dados
+        $minutes = \Carbon\Carbon::now()->addMinutes(10);
+        $products = \Cache::remember('api::products', $minutes, function () {
+            return Product::all();               
+        });
+
+        return $products;
         
-        return Product::all();   
     }
 
     public function store(Request $request){
         
+        //removendo cache 
+        \Cache::forget('api::products');
         $data = $request->all();
         $data['user_id'] = \Auth::user()->id;
         return Product::create($data);
